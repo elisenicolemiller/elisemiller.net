@@ -1,10 +1,607 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Welcome</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elise Miller - Under Construction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 80px 20px;
+        }
+
+        /* Construction tape */
+        .construction-tape {
+            position: fixed;
+            width: 100%;
+            height: 60px;
+            background: repeating-linear-gradient(
+                45deg,
+                #FFD700,
+                #FFD700 40px,
+                #000 40px,
+                #000 80px
+            );
+            z-index: 10;
+            opacity: 0.9;
+        }
+
+        .tape-top {
+            top: 0;
+            transform: rotate(-2deg);
+        }
+
+        .tape-bottom {
+            bottom: 0;
+            transform: rotate(2deg);
+        }
+
+        .container {
+            text-align: center;
+            z-index: 5;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #FFD700;
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #FF6B35;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #333;
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+
+        /* Character container - FIXED */
+        .character-wrapper {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .character {
+            position: relative;
+            width: 250px;
+            height: 300px;
+            transform-origin: center center;
+        }
+
+        /* Hard hat */
+        .hard-hat {
+            position: absolute;
+            width: 110px;
+            height: 45px;
+            background: #FFD700;
+            border-radius: 60% 60% 20% 20%;
+            top: 35px;
+            left: 70px;
+            z-index: 4;
+            border: 4px solid #FFA500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .hard-hat::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 18px;
+            background: #FFD700;
+            border: 3px solid #FFA500;
+            top: -12px;
+            left: 40px;
+            border-radius: 8px 8px 3px 3px;
+        }
+
+        /* Hair */
+        .hair {
+            position: absolute;
+            width: 100px;
+            height: 110px;
+            background: #5C4033;
+            border-radius: 50% 50% 48% 48%;
+            top: 50px;
+            left: 75px;
+            z-index: 1;
+        }
+
+        .hair-left,
+        .hair-right {
+            position: absolute;
+            width: 35px;
+            height: 90px;
+            background: #5C4033;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .hair-left {
+            left: 58px;
+            top: 85px;
+            transform: rotate(-5deg);
+        }
+
+        .hair-right {
+            right: 58px;
+            top: 85px;
+            transform: rotate(5deg);
+        }
+
+        /* Head */
+        .head {
+            position: absolute;
+            width: 90px;
+            height: 100px;
+            background: #FDBCB4;
+            border-radius: 45% 45% 50% 50%;
+            top: 65px;
+            left: 80px;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Eyes */
+        .eye {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 35px;
+            z-index: 3;
+            box-shadow: inset 0 -2px 5px rgba(0,0,0,0.1);
+        }
+
+        .eye-left {
+            left: 15px;
+        }
+
+        .eye-right {
+            right: 15px;
+        }
+
+        .pupil {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #228B22;
+            border-radius: 50%;
+            top: 5px;
+            left: 5px;
+            animation: lookAround 6s infinite;
+        }
+
+        .pupil::after {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+        }
+
+        /* Eyebrows */
+        .eyebrow {
+            position: absolute;
+            width: 20px;
+            height: 3px;
+            background: #5C4033;
+            border-radius: 2px;
+            top: 28px;
+        }
+
+        .eyebrow-left {
+            left: 15px;
+            transform: rotate(-10deg);
+        }
+
+        .eyebrow-right {
+            right: 15px;
+            transform: rotate(10deg);
+        }
+
+        /* Nose */
+        .nose {
+            position: absolute;
+            width: 10px;
+            height: 14px;
+            background: #F5A9A0;
+            border-radius: 50%;
+            top: 55px;
+            left: 40px;
+            z-index: 3;
+        }
+
+        /* Cheeks */
+        .cheek {
+            position: absolute;
+            width: 18px;
+            height: 12px;
+            background: #FFB6C1;
+            border-radius: 50%;
+            top: 60px;
+            opacity: 0.5;
+        }
+
+        .cheek-left {
+            left: 8px;
+        }
+
+        .cheek-right {
+            right: 8px;
+        }
+
+        /* Mouth */
+        .mouth {
+            position: absolute;
+            width: 35px;
+            height: 18px;
+            border: 3px solid #D4756B;
+            border-top: transparent;
+            border-radius: 0 0 60% 60%;
+            top: 70px;
+            left: 28px;
+            z-index: 3;
+        }
+
+        /* Body */
+        .body {
+            position: absolute;
+            width: 80px;
+            height: 95px;
+            background: #FF6B35;
+            border-radius: 15px 15px 5px 5px;
+            top: 160px;
+            left: 85px;
+            z-index: 1;
+        }
+
+        /* Arms */
+        .arm {
+            position: absolute;
+            width: 22px;
+            height: 75px;
+            background: #FF8C61;
+            border-radius: 12px;
+        }
+
+        .arm-left {
+            top: 165px;
+            left: 60px;
+            transform-origin: top center;
+            z-index: 2;
+        }
+
+        .arm-right {
+            top: 165px;
+            right: 60px;
+            transform-origin: top center;
+            animation: scratchHead 6s infinite;
+            z-index: 3;
+        }
+
+        /* Hands */
+        .hand {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #FDBCB4;
+            border-radius: 50%;
+            bottom: -8px;
+            left: 1px;
+        }
+
+        /* Clipboard - FIXED to stay with left arm */
+        .clipboard {
+            position: absolute;
+            width: 65px;
+            height: 85px;
+            background: #8B4513;
+            border-radius: 5px;
+            top: 220px;
+            left: 25px;
+            z-index: 2;
+            padding: 6px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .clipboard::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 12px;
+            background: #666;
+            border-radius: 6px 6px 0 0;
+            top: -6px;
+            left: 22px;
+        }
+
+        .paper {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 3px;
+            position: relative;
+            padding: 8px;
+        }
+
+        .paper-line {
+            width: 85%;
+            height: 2px;
+            background: #4169E1;
+            margin: 6px auto;
+            border-radius: 1px;
+        }
+
+        /* Legs - FIXED */
+        .legs {
+            position: absolute;
+            top: 250px;
+            left: 85px;
+            z-index: 0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .leg {
+            width: 28px;
+            height: 50px;
+            background: #4169E1;
+            border-radius: 5px 5px 0 0;
+            position: relative;
+        }
+
+        .shoe {
+            position: absolute;
+            width: 35px;
+            height: 18px;
+            background: #654321;
+            border-radius: 8px;
+            bottom: -15px;
+            left: -4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .shoe::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 18px;
+            background: #654321;
+            border-radius: 0 8px 8px 0;
+            left: 0;
+            top: 0;
+        }
+
+        /* Animations */
+        @keyframes lookAround {
+            0%, 15% {
+                transform: translate(0, 0);
+            }
+            20%, 35% {
+                transform: translate(-2px, -8px);
+            }
+            40%, 55% {
+                transform: translate(-2px, -8px);
+            }
+            60%, 100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        @keyframes scratchHead {
+            0%, 15% {
+                transform: rotate(0deg);
+            }
+            20%, 35% {
+                transform: rotate(-100deg) translateX(-25px);
+            }
+            40%, 55% {
+                transform: rotate(-100deg) translateX(-25px);
+            }
+            60%, 100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        /* Construction cones */
+        .cone {
+            position: fixed;
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid #FF6B35;
+        }
+
+        .cone::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 15px;
+            background: white;
+            left: -30px;
+            top: 15px;
+        }
+
+        .cone-base {
+            position: absolute;
+            width: 70px;
+            height: 10px;
+            background: #333;
+            border-radius: 5px;
+            bottom: -10px;
+            left: -35px;
+        }
+
+        .cone1 {
+            bottom: 100px;
+            left: 50px;
+        }
+
+        .cone2 {
+            bottom: 100px;
+            right: 50px;
+        }
+
+        /* Tools */
+        .tools {
+            position: fixed;
+            bottom: 80px;
+            right: 150px;
+        }
+
+        .wrench {
+            width: 40px;
+            height: 10px;
+            background: #C0C0C0;
+            position: relative;
+            transform: rotate(-45deg);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .wrench::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border: 3px solid #C0C0C0;
+            border-radius: 50%;
+            right: -10px;
+            top: -5px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.2em;
+            }
+            p {
+                font-size: 1em;
+            }
+            .container {
+                padding: 20px;
+            }
+            .cone1, .cone2, .tools {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Elise Miller Welcome Home!</h1>
+    <div class="construction-tape tape-top"></div>
+    <div class="construction-tape tape-bottom"></div>
+
+    <div class="container">
+        <h1>Pardon Our Dust!</h1>
+        
+        <div class="character-wrapper">
+            <div class="character">
+                <!-- Clipboard -->
+                <div class="clipboard">
+                    <div class="paper">
+                        <div class="paper-line"></div>
+                        <div class="paper-line"></div>
+                        <div class="paper-line"></div>
+                        <div class="paper-line"></div>
+                        <div class="paper-line"></div>
+                    </div>
+                </div>
+
+                <!-- Hair -->
+                <div class="hair"></div>
+                <div class="hair-left"></div>
+                <div class="hair-right"></div>
+
+                <!-- Hard Hat -->
+                <div class="hard-hat"></div>
+
+                <!-- Head -->
+                <div class="head">
+                    <div class="eyebrow eyebrow-left"></div>
+                    <div class="eyebrow eyebrow-right"></div>
+                    <div class="eye eye-left">
+                        <div class="pupil"></div>
+                    </div>
+                    <div class="eye eye-right">
+                        <div class="pupil"></div>
+                    </div>
+                    <div class="nose"></div>
+                    <div class="cheek cheek-left"></div>
+                    <div class="cheek cheek-right"></div>
+                    <div class="mouth"></div>
+                </div>
+
+                <!-- Body -->
+                <div class="body"></div>
+
+                <!-- Arms -->
+                <div class="arm arm-left">
+                    <div class="hand"></div>
+                </div>
+                <div class="arm arm-right">
+                    <div class="hand"></div>
+                </div>
+
+                <!-- Legs -->
+                <div class="legs">
+                    <div class="leg">
+                        <div class="shoe"></div>
+                    </div>
+                    <div class="leg">
+                        <div class="shoe"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p>Looks like we're currently under construction, try coming back later!</p>
+    </div>
+
+    <!-- Decorative elements -->
+    <div class="cone cone1">
+        <div class="cone-base"></div>
+    </div>
+    <div class="cone cone2">
+        <div class="cone-base"></div>
+    </div>
+    <div class="tools">
+        <div class="wrench"></div>
+    </div>
 </body>
 </html>

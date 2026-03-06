@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            background: #1a1a2e;
+        }
+
+        .game-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(to bottom, #87CEEB 0%, #4A90E2 100%);
+        }
+
+        .hud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #FFD700;
+        }
+
+        .controls {
+            font-size: 12px;
+        }
+
+        .title {
+            font-size: 16px;
+            color: #FFD700;
+            text-shadow: 2px 2px #000;
+        }
+
+        .game-world {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            background: #4A90E2;
+        }
+
+        .ocean {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #2E5C8A 0%, #1B4F72 100%);
+            z-index: 1;
+        }
+
+        .wave {
+            position: absolute;
+            font-size: 24px;
+            animation: float 3s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .path {
+            position: absolute;
+            background: #D2B48C;
+            z-index: 3;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .path-horizontal {
+            height: 80px;
+        }
+
+        .path-vertical {
+            width: 80px;
+        }
+
+        .path-grass {
+            background: #90EE90;
+            border: 3px solid #228B22;
+        }
+
+        .path-bridge {
+            background: repeating-linear-gradient(
+                90deg,
+                #8B4513 0px,
+                #8B4513 10px,
+                #A0522D 10px,
+                #A0522D 20px
+            );
+            border: 3px solid #654321;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .island {
+            position: absolute;
+            background: radial-gradient(ellipse, #90EE90 0%, #228B22 100%);
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .character {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            z-index: 50;
+            transition: all 0.2s linear;
+        }
+
+        .character-sprite {
+            font-size: 48px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
+        }
+
+        .node {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(255,255,255,0.9), rgba(200,200,255,0.8));
+            border: 4px solid #4169E1;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .node-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .node-label {
+            font-size: 10px;
+            text-align: center;
+            color: #1a1a2e;
+            text-shadow: 1px 1px #fff;
+        }
+
+        .projects-node {
+            top: 15%;
+            left: 15%;
+        }
+
+        .about-node {
+            top: 15%;
+            right: 15%;
+        }
+
+        .hobbies-node {
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .decoration {
+            position: absolute;
+            font-size: 32px;
+            pointer-events: none;
+            opacity: 0.8;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="hud">
+            <div class="controls">
+                <p>🎮 Use WASD to move | SPACE to interact</p>
+            </div>
+            <div class="title">Portfolio Adventure</div>
+        </div>
+        
+        <div class="game-world" id="gameWorld">
+            <!-- Ocean layer -->
+            <div class="ocean"></div>
+            
+            <!-- Water decorations -->
+            <div class="wave" style="top: 20%; left: 30%;">🌊</div>
+            <div class="wave" style="top: 45%; left: 60%; animation-delay: 1s;">🌊</div>
+            <div class="wave" style="top: 70%; left: 25%; animation-delay: 2s;">🌊</div>
+            <div class="wave" style="top: 35%; right: 20%; animation-delay: 1.5s;">🌊</div>
+            
+            <!-- Islands -->
+            <div class="island" style="top: 10%; left: 10%; width: 200px; height: 200px;"></div>
+            <div class="island" style="top: 10%; right: 10%; width: 200px; height: 200px;"></div>
+            <div class="island" style="bottom: 15%; left: 50%; transform: translateX(-50%); width: 220px; height: 220px;"></div>
+            
+            <!-- Paths -->
+            <div class="path path-vertical path-grass" style="top: 10%; left: 15%; height: 120px;"></div>
+            <div class="path path-horizontal path-grass" style="top: 21%; left: 15%; width: 150px;"></div>
+            <div class="path path-vertical path-grass" style="top: 21%; left: 21%; height: 200px;"></div>
+            <div class="path path-horizontal path-bridge" style="top: 50%; left: 21%; width: 300px;"></div>
+            <div class="path path-vertical path-grass" style="top: 21%; right: 21%; height: 200px;"></div>
+            <div class="path path-horizontal path-grass" style="top: 21%; right: 15%; width: 150px;"></div>
+            <div class="path path-vertical path-grass" style="top: 10%; right: 15%; height: 120px;"></div>
+            <div class="path path-horizontal path-grass" style="top: 50%; right: 21%; width: 150px;"></div>
+            <div class="path path-vertical path-grass" style="top: 50%; left: 46.5%; height: 180px;"></div>
+            <div class="path path-horizontal path-grass" style="bottom: 23%; left: 46.5%; width: 80px;"></div>
+            
+            <!-- Character -->
+            <div class="character" id="character">
+                <div class="character-sprite">🧙‍♂️</div>
+            </div>
+            
+            <!-- Nodes -->
+            <div class="node projects-node">
+                <div class="node-icon">💼</div>
+                <div class="node-label">Projects</div>
+            </div>
+            
+            <div class="node about-node">
+                <div class="node-icon">👤</div>
+                <div class="node-label">About Me</div>
+            </div>
+            
+            <div class="node hobbies-node">
+                <div class="node-icon">🎮</div>
+                <div class="node-label">Hobbies</div>
+            </div>
+            
+            <!-- Decorations -->
+            <div class="decoration" style="top: 12%; left: 12%;">🌲</div>
+            <div class="decoration" style="top: 12%; right: 12%;">🌲</div>
+            <div class="decoration" style="bottom: 17%; left: 48%;">🌸</div>
+        </div>
+    </div>
+
+    <script>
+        const character = document.getElementById('character');
+        character.style.left = '15%';
+        character.style.top = '10%';
+        
+        console.log('Page loaded successfully!');
+    </script>
+</body>
+</html>
